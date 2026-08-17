@@ -116,10 +116,10 @@ T_PTBR[no_tty_hint]="Baixe o arquivo e execute direto: ./setup-github-keys.sh"
 T_EN[no_tty_hint]="Download the file and run it directly: ./setup-github-keys.sh"
 T_PTBR[bash_old]="Este script precisa do bash 4.3 ou superior. Versão encontrada: %s"
 T_EN[bash_old]="This script needs bash 4.3 or newer. Found version: %s"
-T_PTBR[is_root]="Não execute este assistente como root (sudo)."
-T_EN[is_root]="Do not run this assistant as root (sudo)."
-T_PTBR[is_root_why]="A chave seria criada em /root/.ssh e não serviria para o seu usuário. Rode como você mesmo; o script pede sudo apenas se precisar instalar pacotes."
-T_EN[is_root_why]="The key would land in /root/.ssh and would be useless for your user. Run it as yourself; the script asks for sudo only if it needs to install packages."
+T_PTBR[is_root]="Rodando como root: a chave será criada em /root/.ssh, não na pasta do seu usuário comum."
+T_EN[is_root]="Running as root: the key will be created in /root/.ssh, not in your regular user's folder."
+T_PTBR[is_root_why]="Se a intenção era configurar o SSH do seu usuário, saia e rode sem sudo. Seguindo em frente do mesmo jeito."
+T_EN[is_root_why]="If you meant to set up SSH for your own user, quit and run it without sudo. Carrying on anyway."
 T_PTBR[cancelled]="Tudo bem, cancelado. Nada foi alterado."
 T_EN[cancelled]="No problem, cancelled. Nothing was changed."
 T_PTBR[copied_clipboard]="Copiado para a área de transferência (%s)."
@@ -776,11 +776,9 @@ step_2_system() {
         else
             warn s2_os_not_ubuntu "${os_name:-$os_id} ${os_ver:-}"
             tip s2_os_derivative
-            ask_yes_no s2_continue_anyway y || { p cancelled; exit 0; }
         fi
     else
         warn s2_os_unknown
-        ask_yes_no s2_continue_anyway y || { p cancelled; exit 0; }
     fi
     printf '\n'
 
@@ -1450,9 +1448,8 @@ main() {
     banner
 
     if [[ "${EUID:-$(id -u)}" -eq 0 ]]; then
-        err is_root
-        p is_root_why
-        exit 1
+        warn is_root
+        tip is_root_why
     fi
 
     step_2_system
