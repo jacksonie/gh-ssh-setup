@@ -956,7 +956,7 @@ step_5_generate() {
             break
         fi
         warn s5_exists "$KEY_PATH"
-        if ask_yes_no s5_overwrite_q n && ask_yes_no s5_overwrite_confirm n; then
+        if ask_yes_no s5_overwrite_q n; then
             local stamp="bak-$$"
             [[ -e "$KEY_PATH" ]] && { mv "$KEY_PATH" "$KEY_PATH.$stamp"; ok s5_backup_made "$KEY_PATH.$stamp"; }
             [[ -e "$KEY_PATH.pub" ]] && { mv "$KEY_PATH.pub" "$KEY_PATH.pub.$stamp"; ok s5_backup_made "$KEY_PATH.pub.$stamp"; }
