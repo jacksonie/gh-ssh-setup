@@ -1,267 +1,318 @@
-# gh-key-setup-assist
+# GitHub SSH Setup Assistant
 
-🔐 **Assistente interativo de configuração de chaves SSH para o GitHub** | **Interactive GitHub SSH key setup assistant**
+🔐 **Interactive SSH key setup automation for GitHub** — Bash script that handles GitHub SSH authentication in one command.
 
-Um script Bash completo e amigável para configurar autenticação SSH com o GitHub no Ubuntu, com suporte bilíngue (português/inglês) e validação de segurança integrada.
+A complete, user-friendly Bash script to configure SSH authentication with GitHub on Ubuntu. Supports bilingual interface (English/Portuguese), built-in security validation, and automatic dependency installation.
 
----
-
-## 📋 Características
-
-✅ **Geração de chaves SSH Ed25519** — algoritmo moderno e seguro  
-✅ **Configuração automática de `git config`** — nome e e-mail  
-✅ **Gerenciamento de ssh-agent** — sessão persistente com `AddKeysToAgent`  
-✅ **Validação de fingerprint** — verifica a identidade legítima do GitHub  
-✅ **Guia passo-a-passo** — cola a chave pública no GitHub de forma segura  
-✅ **Teste de autenticação** — valida acesso SSH no final  
-✅ **Suporte bilíngue** — português (Brasil) e inglês  
-✅ **Sem dependências extras** — apenas `bash`, `git` e `openssh`  
+**Available in:** English • [Português (Brasil)](#português--brasil)
 
 ---
 
-## 🚀 Início Rápido
+## 📋 Features
 
-### 1. Baixe e execute
+✅ **Ed25519 SSH key generation** — modern and secure algorithm  
+✅ **Automatic git config setup** — name and email  
+✅ **ssh-agent management** — persistent session with `AddKeysToAgent`  
+✅ **Fingerprint validation** — verifies legitimate GitHub identity  
+✅ **Step-by-step guidance** — safely paste public key into GitHub  
+✅ **Authentication testing** — validates SSH access at the end  
+✅ **Bilingual interface** — English and Portuguese (Brazil)  
+✅ **Zero extra dependencies** — just `bash`, `git`, and `openssh`  
+
+---
+
+## 🚀 Quick Start
+
+### 1. Download and run
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/jacksonie/gh-key-setup-assist/master/setup-github-keys.sh \
+curl -sSL https://raw.githubusercontent.com/jacksonie/gh-ssh-setup/master/setup-github-keys.sh \
   -o setup-github-keys.sh && chmod +x setup-github-keys.sh && ./setup-github-keys.sh
 ```
 
-Ou clone o repositório:
+Or clone the repository:
 
 ```bash
-git clone https://github.com/jacksonie/gh-key-setup-assist.git
-cd gh-key-setup-assist
+git clone https://github.com/jacksonie/gh-ssh-setup.git
+cd gh-ssh-setup
 chmod +x setup-github-keys.sh
 ./setup-github-keys.sh
 ```
 
-### 2. Siga as instruções interativas
+### 2. Follow interactive prompts
 
-O script guiará você por 8 passos simples:
+The script walks you through 8 simple steps:
 
-1. **Escolher idioma** — Português ou English
-2. **Verificar dependências** — instala `git`, `openssh-client` se necessário
-3. **Configurar identidade Git** — seu nome e e-mail
-4. **Chaves existentes** — reusar chaves antigas ou criar nova
-5. **Gerar chave SSH** — Ed25519 com comentário personalizado
-6. **Configurar ssh-agent** — carrega a chave na memória, ajusta `~/.ssh/config`
-7. **Colar no GitHub** — copia a chave pública e guia pelo navegador
-8. **Teste final** — valida autenticação SSH com sucesso
+1. **Choose language** — English or Português
+2. **Check dependencies** — auto-installs `git`, `openssh-client` if needed
+3. **Configure Git identity** — your name and email
+4. **Existing keys** — reuse old keys or create new
+5. **Generate SSH key** — Ed25519 with custom comment
+6. **Setup ssh-agent** — loads key in memory, adjusts `~/.ssh/config`
+7. **Paste on GitHub** — copies key and guides you through the browser
+8. **Final test** — validates SSH authentication success
 
 ---
 
-## 📖 Opções de Linha de Comando
+## 📖 Command-Line Options
 
 ```bash
-./setup-github-keys.sh [opções]
+./setup-github-keys.sh [options]
 ```
 
-| Opção | Descrição |
-|-------|----------|
-| `--lang pt-br` | Define idioma para português (Brasil) |
-| `--lang en` | Define idioma para inglês |
-| `--no-color` | Desativa cores da saída |
-| `-h, --help` | Mostra ajuda |
-| `--version` | Mostra versão |
+| Option | Description |
+|--------|-------------|
+| `--lang pt-br` | Set language to Portuguese (Brazil) |
+| `--lang en` | Set language to English |
+| `--no-color` | Disable colored output |
+| `-h, --help` | Show help message |
+| `--version` | Show version |
 
-### Exemplos
+### Examples
 
 ```bash
-# Pula a tela de idioma direto para português
-./setup-github-keys.sh --lang pt-br
+# Force English, skip language selection
+./setup-github-keys.sh --lang en
 
-# Executa em inglês sem cores
-./setup-github-keys.sh --lang en --no-color
+# Run in Portuguese without colors
+./setup-github-keys.sh --lang pt-br --no-color
 
-# Mostra versão do script
+# Show version
 ./setup-github-keys.sh --version
 ```
 
 ---
 
-## ✅ O que o Script Faz
+## ✅ What It Does
 
-### Cria/Configura
+### Creates & Configures
 
-- ✅ Gera uma chave SSH **Ed25519** (moderna, segura, menor que RSA 4096)
-- ✅ Configura `git config --global user.name` e `user.email`
-- ✅ Adiciona um bloco `Host github.com` em `~/.ssh/config`
-- ✅ Carrega a chave no **ssh-agent** com `AddKeysToAgent yes` (persistência)
-- ✅ Registra o GitHub em `~/.ssh/known_hosts` com validação de fingerprint
-- ✅ Testa autenticação SSH final com `ssh -T git@github.com`
+- ✅ Generates an **Ed25519 SSH key pair** (modern, secure, smaller than RSA 4096)
+- ✅ Configures `git config --global user.name` and `user.email`
+- ✅ Adds a `Host github.com` block to `~/.ssh/config`
+- ✅ Loads the key into **ssh-agent** with `AddKeysToAgent yes` (persistence)
+- ✅ Registers GitHub in `~/.ssh/known_hosts` with fingerprint validation
+- ✅ Tests SSH authentication with `ssh -T git@github.com`
 
-### Protege
+### Protects
 
-- 🔒 Permissões corretas: `~/.ssh` com `700`, chaves privadas com `600`
-- 🔒 Nunca armazena senhas/passphrases — tudo interativo
-- 🔒 Valida fingerprints oficiais do GitHub contra MITM
-- 🔒 Cria backup antes de sobrescrever arquivos existentes
-- 🔒 Aviso claro se rodado como `root`
+- 🔒 Correct permissions: `~/.ssh` at `700`, private keys at `600`
+- 🔒 Never stores passwords/passphrases — all interactive
+- 🔒 Validates official GitHub fingerprints against MITM attacks
+- 🔒 Creates backups before overwriting existing files
+- 🔒 Warns clearly if run as `root`
 
-### Não Faz
+### Does NOT Handle
 
-- ❌ **Não** gerencia chaves GPG ou assinatura de commits
-- ❌ **Não** instala/configura GitHub CLI (`gh`)
-- ❌ **Não** gerencia tokens HTTPS ou autenticação por senha
+- ❌ **Not** GPG key management or commit signing
+- ❌ **Not** GitHub CLI (`gh`) setup
+- ❌ **Not** HTTPS tokens or password authentication
 
 ---
 
-## 🛠️ Requisitos
+## 🛠️ Requirements
 
-| Requisito | Versão Mínima |
-|-----------|---------------|
+| Requirement | Minimum Version |
+|-------------|------------------|
 | **Bash** | 4.3+ |
-| **Ubuntu** | 22.04 a 25.x (outros distros Linux podem funcionar) |
-| **Git** | Qualquer versão recente |
-| **OpenSSH** | Cliente + server padrão do Ubuntu |
+| **Ubuntu** | 22.04 to 25.x (other Linux distros may work) |
+| **Git** | Any recent version |
+| **OpenSSH** | Standard Ubuntu client + server |
 
-O script verifica automaticamente e oferece instalar via `apt` se faltar algo.
-
----
-
-## 📝 Fluxo Detalhado dos 8 Passos
-
-### Passo 1: Idioma
-Escolha entre português (Brasil) ou inglês. Pode ser pulado com `--lang`.
-
-### Passo 2: Sistema
-Verifica Ubuntu, versão do Bash, e se `git`, `ssh`, `ssh-keygen`, `ssh-agent`, `ssh-add`, `ssh-keyscan` estão instalados. Oferece instalar automaticamente.
-
-### Passo 3: Identidade Git
-Configura `user.name` e `user.email` globais. Sugere usar endereço `@users.noreply.github.com` para privacidade em commits públicos.
-
-### Passo 4: Chaves Existentes
-Lista chaves SSH já presentes em `~/.ssh/`. Você pode:
-- Criar uma nova (recomendado)
-- Reusar uma existente
-
-### Passo 5: Gerar Chave
-Se criando nova:
-- Define caminho da chave (padrão: `~/.ssh/id_ed25519_github`)
-- Pergunta se quer substituir arquivo existente (faz backup)
-- Adiciona comentário para identificar depois
-- Pergunta se usar senha na chave (recomendado para segurança)
-- ssh-keygen gera o par
-
-### Passo 6: Agent + Config
-- Inicia/reutiliza ssh-agent
-- Carrega a chave no agente (pede senha se houver)
-- Cria bloco `Host github.com` em `~/.ssh/config`
-- Registra github.com em `~/.ssh/known_hosts` com validação de fingerprint
-
-### Passo 7: Colar no GitHub
-- Exibe a chave pública (em destaque, com opção de copiar)
-- Abre navegador automaticamente se GUI disponível
-- Guia passo-a-passo para colar em https://github.com/settings/ssh/new
-- Aguarda sua confirmação quando terminar
-
-### Passo 8: Teste Final
-- Testa `ssh -T git@github.com`
-- Se sucesso: mostra username, resumo de todos os passos
-- Se falha: oferece retry, diagnóstico ou mostrar config
+The script automatically checks and offers to install via `apt` if anything is missing.
 
 ---
 
-## 🔍 Validação de Segurança
+## 📝 Detailed 8-Step Flow
 
-O script valida a identidade do GitHub consultando a fingerprint oficial:
+### Step 1: Language Selection
+Choose between English or Portuguese (Brazil). Can be skipped with `--lang`.
+
+### Step 2: System Check
+Verifies Ubuntu, Bash version, and presence of `git`, `ssh`, `ssh-keygen`, `ssh-agent`, `ssh-add`, `ssh-keyscan`. Offers automatic installation.
+
+### Step 3: Git Identity
+Configures global `user.name` and `user.email`. Suggests using `@users.noreply.github.com` address for privacy in public commits.
+
+### Step 4: Existing Keys
+Lists SSH keys already in `~/.ssh/`. You can:
+- Create a new key (recommended)
+- Reuse an existing key
+
+### Step 5: Generate SSH Key
+If creating new:
+- Choose key file path (default: `~/.ssh/id_ed25519_github`)
+- Replace existing file (creates backup first)
+- Add custom comment for identification
+- Choose whether to use a passphrase (recommended for security)
+- ssh-keygen generates the key pair
+
+### Step 6: Agent + Config Setup
+- Start/reuse ssh-agent
+- Load key into agent (prompts for passphrase if set)
+- Create `Host github.com` block in `~/.ssh/config`
+- Register github.com in `~/.ssh/known_hosts` with fingerprint validation
+
+### Step 7: Paste Key on GitHub
+- Displays public key (highlighted, with clipboard copy option)
+- Auto-opens browser if GUI available
+- Step-by-step guide to paste at https://github.com/settings/ssh/new
+- Waits for your confirmation
+
+### Step 8: Final Test
+- Tests `ssh -T git@github.com`
+- On success: shows username, full checklist summary
+- On failure: offers retry, diagnostics, or config review
+
+---
+
+## 🔍 Security Validation
+
+The script validates GitHub's identity by checking official fingerprints:
 
 - **Ed25519:** `SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU`
 - **ECDSA:** `SHA256:p2QAMXNIC1TJYWeIOttrVc98/R1BUFWu3/LiyKgUfQM`
 - **RSA:** `SHA256:uNiVztksCsDhcc0u9e8BujQXVUpKZIDTMczCvj3tD2s`
 
-Se houver discrepância (proxy corporativo, MITM), o script **não adiciona** ao `known_hosts` e usa `StrictHostKeyChecking=yes` no teste.
+If fingerprints don't match (corporate proxy, MITM), the script **doesn't add** to `known_hosts` and uses `StrictHostKeyChecking=yes` for testing.
 
-Referência: https://docs.github.com/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
+Reference: https://docs.github.com/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
 
 ---
 
-## 🎯 Próximos Passos Após Completar
+## 🎯 Next Steps After Completion
 
-Depois que o script termina com sucesso:
+Once the script finishes successfully:
 
-### Clonar um repositório
-
-```bash
-git clone git@github.com:usuario/repositorio.git
-```
-
-### Converter repositório existente de HTTPS para SSH
+### Clone a repository
 
 ```bash
-cd seu-repositorio
-git remote set-url origin git@github.com:usuario/repositorio.git
+git clone git@github.com:username/repository.git
 ```
 
-### Ver suas chaves cadastradas no GitHub
+### Switch existing HTTPS repository to SSH
 
-https://github.com/settings/keys (mostra data do último uso)
+```bash
+cd your-repository
+git remote set-url origin git@github.com:username/repository.git
+```
+
+### View your registered SSH keys
+
+https://github.com/settings/keys (shows last-used date)
 
 ---
 
 ## 🐛 Troubleshooting
 
 ### "Permission denied (publickey)"
-**Causa mais comum:** Chave não foi colada no GitHub, ou foi colada incompleta.
-- Vá para https://github.com/settings/ssh/new
-- Cole a chave **inteira**, começando em `ssh-ed25519`, em **uma única linha**
-- Se faltando, o script oferece opção de retry no passo 8
+**Most common cause:** Key wasn't pasted into GitHub, or pasted incomplete.
+- Go to https://github.com/settings/ssh/new
+- Paste the **entire** key, starting with `ssh-ed25519`, on **one single line**
+- The script offers a retry option in step 8
 
-### "ssh-agent não persiste entre sessões"
-**Normal!** O script cria um agente temporário apenas para a sessão atual. A persistência real vem da linha `AddKeysToAgent yes` no `~/.ssh/config` — o ssh automaticamente carrega a chave quando precisar.
+### "ssh-agent doesn't persist between sessions"
+**This is normal!** The script creates a temporary agent for the current session only. Real persistence comes from `AddKeysToAgent yes` in `~/.ssh/config` — ssh will automatically load the key when needed.
 
-### "Rodando como root"
-**Aviso!** Se usar `sudo ./setup-github-keys.sh`, a chave será criada em `/root/.ssh`, não em `~/.ssh` do seu usuário comum.
-- **Solução:** Rode sem `sudo`: `./setup-github-keys.sh`
+### "Running as root"
+**Warning!** If you use `sudo ./setup-github-keys.sh`, the key is created in `/root/.ssh`, not your regular user's `~/.ssh`.
+- **Solution:** Run without `sudo`: `./setup-github-keys.sh`
 
-### "Distribuição não é Ubuntu"
-Derivadas do Ubuntu (Linux Mint, Pop!_OS, Zorin) geralmente funcionam. Outros distros podem precisar instalar manualmente.
-
----
-
-## 📄 Licença
-
-Licença MIT — veja [LICENSE](LICENSE) para detalhes.
-
-Você é livre para usar, modificar e distribuir este script.
+### "Distro is not Ubuntu"
+Ubuntu derivatives (Linux Mint, Pop!_OS, Zorin) usually work. Other distros may need manual package installation.
 
 ---
 
-## 🤝 Contribuições
+## 📄 License
 
-Encontrou um bug? Ideias para melhorias?
+MIT License — see [LICENSE](LICENSE) for details.
 
-1. Abra uma [Issue](https://github.com/jacksonie/gh-key-setup-assist/issues)
-2. Descreva o problema ou sugestão
-3. Pull requests são bem-vindos!
+You're free to use, modify, and distribute this script.
 
 ---
 
-## 📞 Suporte
+## 🤝 Contributing
 
-Para dúvidas sobre GitHub SSH em geral:
+Found a bug? Have an improvement idea?
+
+1. Open an [Issue](https://github.com/jacksonie/gh-ssh-setup/issues)
+2. Describe the problem or suggestion
+3. Pull requests are welcome!
+
+---
+
+## 📞 Support
+
+For general GitHub SSH questions:
 - https://docs.github.com/authentication/connecting-to-github-with-ssh
 
-Para dúvidas específicas deste script:
-- Abra uma Issue neste repositório
+For issues with this script:
+- Open an issue on this repository
 
 ---
 
-## 📊 Estrutura do Repositório
+## 📊 Repository Structure
 
 ```
-gh-key-setup-assist/
-├── setup-github-keys.sh     # Script principal
-├── README.md                # Este arquivo
-└── LICENSE                  # Licença MIT
+gh-ssh-setup/
+├── setup-github-keys.sh     # Main script
+├── README.md                # This file
+└── LICENSE                  # MIT License
 ```
 
 ---
 
-**Versão:** 1.0.0  
-**Mantido por:** Jackson Souza  
-**Última atualização:** 2024
+## Português — Brasil
 
-Bom trabalho! 🚀
+### O que é?
+
+Um script Bash interativo que configura autenticação SSH com o GitHub no Ubuntu em um único comando. Suporta português e inglês, validação de segurança integrada e instalação automática de dependências.
+
+### Como usar?
+
+```bash
+# Executar com português (Brasil)
+./setup-github-keys.sh --lang pt-br
+```
+
+O script o guiará por 8 passos simples para:
+1. Gerar uma chave SSH Ed25519
+2. Configurar identidade Git (nome e e-mail)
+3. Configurar ssh-agent e `~/.ssh/config`
+4. Validar a identidade do GitHub
+5. Testar autenticação SSH
+
+### Características
+
+✅ Geração de chaves SSH Ed25519  
+✅ Configuração automática de `git config`  
+✅ Gerenciamento de ssh-agent com persistência  
+✅ Validação de fingerprint do GitHub  
+✅ Guia passo-a-passo interativo  
+✅ Teste de autenticação final  
+✅ Suporte bilíngue (português/inglês)  
+✅ Sem dependências extras  
+
+### Próximos passos
+
+```bash
+# Clonar um repositório por SSH
+git clone git@github.com:usuario/repositorio.git
+
+# Converter repositório de HTTPS para SSH
+git remote set-url origin git@github.com:usuario/repositorio.git
+```
+
+Para mais detalhes em português, execute:
+```bash
+./setup-github-keys.sh --lang pt-br
+```
+
+---
+
+**Version:** 1.0.0  
+**Maintained by:** Jackson Souza  
+**License:** MIT  
+**Last updated:** 2024
+
+Ready to go! 🚀
