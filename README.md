@@ -310,9 +310,7 @@ Para mais detalhes em português, execute:
 
 ---
 
-**Version:** 1.0.0  
-**Maintained by:** Jackson Souza  
+**Version:** 1.0.0    
 **License:** MIT  
-**Last updated:** 2024
 
 Ready to go! 🚀
